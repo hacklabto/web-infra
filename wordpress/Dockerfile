@@ -7,7 +7,6 @@ WORKDIR /app
 # Unit entrypoint, but config is in /app/config instead of /docker-entrypoint.d
 RUN wget https://raw.githubusercontent.com/nginx/unit/d48180190752201865f41b2cf1e0a6740fa2ea59/pkg/docker/docker-entrypoint.sh
 RUN sed -i 's/docker-entrypoint\.d/app\/config/g' docker-entrypoint.sh
-RUN sed -i 's#exec "$@"#mount -t tmpfs none /var/lib/unit\n&#' docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 
 RUN wget -O - https://wordpress.org/wordpress-6.4.2.tar.gz | tar xz
@@ -23,6 +22,7 @@ RUN (cd wordpress/wp-content/themes && git clone https://github.com/hacklabto/pi
 WORKDIR /app/config
 COPY config.json .
 
+# mount type=tmpfs,destination=/var/lib/unit
 # mount /app/wordpress/wp-config.php:ro
 # mount /app/wordpress/wp-content/uploads/:rw
 
