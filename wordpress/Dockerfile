@@ -1,6 +1,8 @@
 FROM alpine:latest
 
-RUN apk add unit-php82 php82-ldap php82-mysqli zip curl git
+RUN apk add unit-php82 php82-ldap php82-mysqli php82-curl php82-dom php82-exif php82-fileinfo \
+    php82-pecl-imagick php82-mbstring php82-zip php82-gd php82-iconv php82-intl \
+    zip curl git
 
 WORKDIR /app
 
@@ -16,6 +18,7 @@ RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.or
 RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.org/plugin/flamingo.2.4.zip | busybox unzip -)
 RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.org/plugin/wp-security-audit-log.zip | busybox unzip -)
 RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.org/plugin/wpdirauth.1.10.7.zip | busybox unzip -)
+RUN rm wordpress/wp-content/plugins/hello.php
 
 RUN (cd wordpress/wp-content/themes && git clone https://github.com/hacklabto/pixeled-wordpress-theme pixeled && rm -rf pixeled/.git)
 
