@@ -29,4 +29,6 @@ COPY config.json .
 # mount /app/wordpress/wp-config.php:ro
 # mount /app/wordpress/wp-content/uploads/:rw
 
-CMD [ "/app/docker-entrypoint.sh", "unitd", "--no-daemon", "--user", "nobody", "--group", "nobody" ]
+RUN apk add strace
+
+CMD [ "/app/docker-entrypoint.sh", "unitd", "--log", "stdout", "--no-daemon", "--user", "nobody", "--group", "nobody" ]
