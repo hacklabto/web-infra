@@ -1,4 +1,4 @@
-name: Build debug Docker image
+name: Build wordpress Docker image
 
 on:
   - push
