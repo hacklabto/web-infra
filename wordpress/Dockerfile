@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add unit-php82 php82-ldap php82-mysqli zip curl
+RUN apk add unit-php82 php82-ldap php82-mysqli zip curl git
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.or
 RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.org/plugin/wp-security-audit-log.zip | zip -r)
 RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.org/plugin/wpdirauth.1.10.7.zip | zip -r)
 
-# add 
+RUN (cd wordpress/wp-content/plugins && git clone https://github.com/hacklabto/pixeled-wordpress-theme pixeled && rm -rf pixeled/.git)
 
 WORKDIR /app/config
 COPY config.json .
