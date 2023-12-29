@@ -11,6 +11,9 @@ RUN wget https://raw.githubusercontent.com/nginx/unit/d48180190752201865f41b2cf1
 RUN sed -i 's/docker-entrypoint\.d/app\/config/g' docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 
+# fix for `unlink("/run/unit.pid") failed (2: No such file or directory)`, should ask upstream about this at some point
+RUN sed -i 's#set -e#touch /run/unit.pid\n&#' docker-entrypoint.sh
+
 RUN wget -O - https://wordpress.org/wordpress-6.4.2.tar.gz | tar xz
 
 # akismet is preinstalled, although maybe we will want to download a specific version of it at some point
@@ -29,6 +32,4 @@ COPY config.json .
 # mount /app/wordpress/wp-config.php:ro
 # mount /app/wordpress/wp-content/uploads/:rw
 
-RUN apk add strace
-
-CMD [ "/app/docker-entrypoint.sh", "unitd", "--log", "stdout", "--no-daemon", "--user", "nobody", "--group", "nobody" ]
+CMD [ "/app/docker-entrypoint.sh", "unitd", "--log", "/dev/stdout", "--no-daemon", "--user", "nobody", "--group", "nobody" ]
