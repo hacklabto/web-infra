@@ -42,7 +42,7 @@ set_config() {
     log "Setting access logs to /dev/stdout"
     curl_put '"/dev/stdout"' "config/access_log"
 
-    config="/app/config/config.json"
+    config="/app/config.json"
     log "Applying configuration $config"
     curl_put @$config config
 

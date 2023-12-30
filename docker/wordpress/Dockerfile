@@ -1,12 +1,4 @@
-FROM alpine:latest
-
-RUN apk add unit-php82 php82-ldap php82-mysqli php82-curl php82-dom php82-exif php82-fileinfo \
-    php82-pecl-imagick php82-mbstring php82-zip php82-gd php82-iconv php82-intl \
-    zip curl git strace
-
-WORKDIR /app
-
-COPY docker-entrypoint.sh .
+FROM ghcr.io/hacklabto/unit-base:todo
 
 RUN wget -O - https://wordpress.org/wordpress-6.4.2.tar.gz | tar xz
 
@@ -19,11 +11,4 @@ RUN rm wordpress/wp-content/plugins/hello.php
 
 RUN (cd wordpress/wp-content/themes && git clone https://github.com/hacklabto/pixeled-wordpress-theme pixeled && rm -rf pixeled/.git)
 
-WORKDIR /app/config
-COPY config.json .
-
-# mount type=tmpfs,destination=/var/lib/unit
-# mount /app/wordpress/wp-config.php:ro
-# mount /app/wordpress/wp-content/uploads/:rw
-
-CMD [ "/app/docker-entrypoint.sh" ]
+COPY config.json /app/config.json
