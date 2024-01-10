@@ -45,7 +45,7 @@
 					"script": "index.php"
 				}
 			},
-			"process": {
+			"processes": {
 				"idle_timeout": 30,
 				"max": 50,
 				"spare": 1
