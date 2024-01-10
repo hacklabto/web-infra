@@ -44,6 +44,11 @@
 					"root": "/app/wordpress/",
 					"script": "index.php"
 				}
+			},
+			"process": {
+				"idle_timeout": 30,
+				"max": 50,
+				"spare": 1
 			}
 		}
 	}
