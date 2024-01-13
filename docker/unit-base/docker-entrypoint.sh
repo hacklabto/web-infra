@@ -58,4 +58,4 @@ log "Starting config thread in background..."
 sh $0 set-config &
 
 log "Starting unitd..."
-exec unitd --control unix:/var/run/control.unit.sock --log /dev/stdout --no-daemon --user nobody --group nobody
+exec unitd --control unix:/var/run/control.unit.sock --log /dev/stdout --no-daemon --user unit --group unit
