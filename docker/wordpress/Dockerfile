@@ -1,4 +1,4 @@
-FROM ghcr.io/hacklabto/unit-base:f1708a6ec77445ecde3e4c363645df7c03dc241b
+FROM ghcr.io/hacklabto/unit-base:69721c1c78d23f8fdb4074dea71593160fe6417e
 
 RUN wget -O - https://wordpress.org/wordpress-6.4.2.tar.gz | tar xz
 

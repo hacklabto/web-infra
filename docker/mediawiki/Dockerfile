@@ -1,4 +1,4 @@
-FROM ghcr.io/hacklabto/unit-base:f1708a6ec77445ecde3e4c363645df7c03dc241b
+FROM ghcr.io/hacklabto/unit-base:69721c1c78d23f8fdb4074dea71593160fe6417e
 
 RUN apk add php82-xml php82-ctype php82-session php82-xmlreader imagemagick
 
