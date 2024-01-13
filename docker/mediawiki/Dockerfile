@@ -1,5 +1,7 @@
 FROM ghcr.io/hacklabto/unit-base:f1708a6ec77445ecde3e4c363645df7c03dc241b
 
+RUN apk add php82-xml php82-ctype
+
 # todo: this image is _way_ too big
 
 RUN sed -i 's#set -e"#(cd /app/mediawiki && php maintenance/run.php update)\n\n&#' docker-entrypoint.sh
