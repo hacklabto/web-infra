@@ -1,0 +1,95 @@
+{
+	"listeners": {
+		"0.0.0.0:8080": {
+			"pass": "routes/mediawiki"
+		}
+	},
+
+	"routes": {
+		"mediawiki": [
+			{
+				"match": {
+					"uri": [
+						"!/tests/qunit/*",
+						"/cache/*",
+						"/includes/*",
+						"/languages/*",
+						"/maintenance/*",
+						"/tests/*",
+						"/vendor/*"
+					]
+				},
+
+				"action": {
+					"return": 404
+				}
+			},
+			{
+				"match": {
+					"uri": [
+						"/api.php*",
+						"/img_auth.php*",
+						"/index.php*",
+						"/load.php*",
+						"/mw-config/*.php",
+						"/opensearch_desc.php*",
+						"/profileinfo.php*",
+						"/rest.php*",
+						"/tests/qunit/*.php",
+						"/thumb.php*",
+						"/thumb_handler.php*"
+					]
+				},
+
+				"action": {
+					"pass": "applications/mediawiki/direct"
+				}
+			},
+			{
+				"match": {
+					"uri": [
+						"!*.php",
+						"!*.json",
+						"!*.htaccess",
+						"/extensions/*",
+						"/images/*",
+						"/resources/assets/*",
+						"/resources/lib/*",
+						"/resources/src/*",
+						"/skins/*"
+					]
+				},
+
+				"action": {
+					"share": "/app/mediawiki$uri"
+				}
+			},
+			{
+				"action": {
+					"pass": "applications/mediawiki/index"
+				}
+			}
+		]
+	},
+
+	"applications": {
+		"mediawiki": {
+			"type": "php",
+			"targets": {
+				"direct": {
+					"root": "/app/mediawiki"
+				},
+
+				"index": {
+					"root": "/app/mediawiki",
+					"script": "index.php"
+				}
+			},
+			"processes": {
+				"idle_timeout": 30,
+				"max": 50,
+				"spare": 1
+			}
+		}
+	}
+}
