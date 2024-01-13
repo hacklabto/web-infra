@@ -10,5 +10,6 @@ COPY docker-entrypoint.sh .
 
 VOLUME [ "/var/lib/unit" ]
 VOLUME [ "/run" ]
+VOLUME [ "/tmp" ]
 
 CMD [ "/app/docker-entrypoint.sh" ]
