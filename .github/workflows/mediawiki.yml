@@ -23,6 +23,6 @@ jobs:
           file: docker/mediawiki/Dockerfile
           push: true
           tags: |
-            ghcr.io/mediawiki/mediawiki:${{ github.sha }}
+            ghcr.io/hacklabto/mediawiki:${{ github.sha }}
           cache-from: type=registry,ref=ghcr.io/hacklabto/mediawiki:${{ env.BRANCH_NAME }}
           cache-to: type=inline
