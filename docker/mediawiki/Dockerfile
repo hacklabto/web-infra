@@ -20,3 +20,6 @@ COPY config.json /app/config.json
 
 # mount /app/mediawiki/LocalSettings.php:ro
 # mount /app/mediawiki/images/:rw
+
+# mediawiki temporary directory
+VOLUME [ "/tmp" ]
