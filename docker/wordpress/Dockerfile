@@ -10,6 +10,6 @@ RUN (cd wordpress/wp-content/plugins && wget -O - https://downloads.wordpress.or
 RUN rm wordpress/wp-content/plugins/hello.php
 
 RUN (cd wordpress/wp-content/themes && git clone https://github.com/hacklabto/pixeled-wordpress-theme pixeled && rm -rf pixeled/.git)
-RUN (cd wordpress/wp-content/themes && rm twentytwentythree twentytwentytwo)
+RUN (cd wordpress/wp-content/themes && rm -r twentytwentythree twentytwentytwo)
 
 COPY config.json /app/config.json
