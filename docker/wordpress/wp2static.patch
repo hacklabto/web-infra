@@ -1,0 +1,13 @@
+diff --git a/src/Crawler.php b/src/Crawler.php
+index 81e526ed..b3cc1baa 100755
+--- a/src/Crawler.php
++++ b/src/Crawler.php
+@@ -232,7 +232,7 @@ class Crawler {
+                         WsLog::l( $notice );
+                     }
+                 },
+-                'rejected' => function ( RequestException $reason, $index ) use ( $urls ) {
++                'rejected' => function ( $reason, $index ) use ( $urls ) {
+                     $root_relative_path = $urls[ $index ]['path'];
+                     WsLog::l( 'Failed ' . $root_relative_path );
+                 },
