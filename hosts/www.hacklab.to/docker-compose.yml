@@ -1,0 +1,32 @@
+services:
+  wordpress:
+    image: ghcr.io/hacklabto/wordpress:${WORDPRESS_COMMIT}
+    ports: ["[::1]:18883:8080"]
+    volumes:
+      - "/opt/wordpress/wp-config.php:/app/wordpress/wp-config.php"
+      - "/opt/wordpress/uploads/:/app/wordpress/wp-content/uploads/:rw"
+
+  knowledge:
+    image: ghcr.io/hacklabto/mediawiki:${MEDIAWIKI_COMMIT}
+    ports: ["[::1]:18882:8080"]
+    volumes:
+      - "/opt/knowledge/LocalSettings.php:/app/mediawiki/LocalSettings.php"
+      - "/opt/knowledge/images:/app/mediawiki/images"
+
+  wiki:
+    image: ghcr.io/hacklabto/mediawiki:${MEDIAWIKI_COMMIT}
+    ports: ["[::1]:18881:8080"]
+    volumes:
+      - "/opt/wiki/LocalSettings.php:/app/mediawiki/LocalSettings.php"
+      - "/opt/wiki/images:/app/mediawiki/images"
+
+  members-platform-web:
+    image: ghcr.io/hacklabto/members-platform:${MEMBERS_WEB_COMMIT}
+    ports: ["[::1]:18884:18884"]
+    entrypoint: "/usr/local/bin/hl-web"
+    environment:
+      - "LDAP_URL=192.168.133.90:636"
+      - "SMTP_URL=192.168.155.8:587"
+      - "DATABASE_URL=${MEMBERS_POSTGRES_URL}"
+      - "REDIS_URL=${MEMBERS_REDIS_URL}"
+      - "LDAP_SELFSERVICE_PASSWORD=${LDAP_SELFSERVICE_PASSWORD}"
