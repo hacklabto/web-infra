@@ -1,6 +1,6 @@
 FROM ghcr.io/hacklabto/unit-base:cda4fb84927d8de52c03c98183bf55718699bf0c
 
-RUN apk add php82-xml php82-ctype php82-session php82-xmlreader imagemagick
+RUN apk add php82-xml php82-ctype php82-session php82-xmlreader imagemagick rsvg-convert
 
 # todo: this image is _way_ too big
 
