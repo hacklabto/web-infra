@@ -13,7 +13,7 @@ function fetch_extension {
 function fetch_skin {
   url=$(curl "https://www.mediawiki.org/w/api.php?action=query&list=extdistbranches&format=json&edbskins=$name" | jq -r ".query.extdistbranches.skins.$name.$version")
 
-  (cd mediawiki/extensions && curl $url | tar xz)
+  (cd mediawiki/skins && curl $url | tar xz)
 }
 
 `fetch_$type`
