@@ -1,17 +1,47 @@
 services:
   wordpress:
     image: ghcr.io/hacklabto/wordpress:${WORDPRESS_COMMIT}
-    ports: ["[::1]:18883:8080"]
+    ports: ["172.17.0.1:18923:8080"]
     volumes:
       - "/opt/wordpress/wp-config.php:/app/wordpress/wp-config.php"
       - "/opt/wordpress/uploads/:/app/wordpress/wp-content/uploads/:rw"
+    restart: always
+
+  anubis-wordpress:
+    image: ghcr.io/techarohq/anubis:main
+    ports: ["[::1]:18883:8923"]
+    environment:
+      - "TARGET=http://172.17.0.1:18923"
+      - "COOKIE_DOMAIN=hacklab.to"
+      - "REDIRECT_DOMAINS=hacklab.to"
+      - "POLICY_FNAME=/data/policy.yaml"
+      - "WEBMASTER_EMAIL=operations@hacklab.to"
+      - "ED25519_PRIVATE_KEY_HEX=${ANUBIS_WORDPRESS_PRIVATE_KEY}"
+    volumes:
+      - "/opt/anubis/wordpress-policy.yaml:/data/policy.yaml:ro"
+    restart: always
 
   knowledge:
     image: ghcr.io/hacklabto/mediawiki:${MEDIAWIKI_COMMIT}
-    ports: ["[::1]:18882:8080"]
+    ports: ["172.17.0.1:18922:8080"]
     volumes:
       - "/opt/knowledge/LocalSettings.php:/app/mediawiki/LocalSettings.php"
       - "/opt/knowledge/images:/app/mediawiki/images"
+    restart: always
+
+  anubis-knowledge:
+    image: ghcr.io/techarohq/anubis:main
+    ports: ["[::1]:18882:8923"]
+    environment:
+      - "TARGET=http://172.17.0.1:18922"
+      - "COOKIE_DOMAIN=hacklab.to"
+      - "REDIRECT_DOMAINS=knowledge.hacklab.to"
+      - "POLICY_FNAME=/data/policy.yaml"
+      - "WEBMASTER_EMAIL=operations@hacklab.to"
+      - "ED25519_PRIVATE_KEY_HEX=${ANUBIS_WORDPRESS_PRIVATE_KEY}"
+    volumes:
+      - "/opt/anubis/knowledge-policy.yaml:/data/policy.yaml:ro"
+    restart: always
 
   wiki:
     image: ghcr.io/hacklabto/mediawiki:${MEDIAWIKI_COMMIT}
@@ -19,6 +49,7 @@ services:
     volumes:
       - "/opt/wiki/LocalSettings.php:/app/mediawiki/LocalSettings.php"
       - "/opt/wiki/images:/app/mediawiki/images"
+    restart: always
 
   members-platform-web:
     image: ghcr.io/hacklabto/members-platform:${MEMBERS_WEB_COMMIT}
@@ -30,3 +61,4 @@ services:
       - "DATABASE_URL=${MEMBERS_POSTGRES_URL}"
       - "REDIS_URL=${MEMBERS_REDIS_URL}"
       - "LDAP_SELFSERVICE_PASSWORD=${LDAP_SELFSERVICE_PASSWORD}"
+    restart: always
