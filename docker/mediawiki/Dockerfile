@@ -1,4 +1,4 @@
-FROM ghcr.io/hacklabto/unit-base:cda4fb84927d8de52c03c98183bf55718699bf0c
+FROM ghcr.io/hacklabto/unit-base:49dacf65d2802f8c6c4e67e7e75bbcedb618d803
 
 RUN apk add php82-xml php82-ctype php82-session php82-xmlreader imagemagick rsvg-convert
 
@@ -17,8 +17,8 @@ RUN /tmp/fetch.sh skin Modern
 RUN /tmp/fetch.sh skin CologneBlue
 RUN /tmp/fetch.sh extension MobileFrontend
 RUN /tmp/fetch.sh extension Auth_remoteuser
-RUN curl -fsL https://github.com/Universal-Omega/DynamicPageList3/archive/REL1_39.tar.gz \
-    | tar xz && mv DynamicPageList3-REL1_39 mediawiki/extensions/DynamicPageList3
+RUN mkdir mediawiki/extensions/DynamicPageList3 && curl -fsL https://github.com/Universal-Omega/DynamicPageList4/archive/REL1_39.tar.gz \
+    | tar xz -C mediawiki/extensions/DynamicPageList3 --strip-components=1
 
 COPY config.json /app/config.json
 

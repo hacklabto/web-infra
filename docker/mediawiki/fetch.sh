@@ -1,19 +1,13 @@
 #!/bin/sh
 
+set -e
+
 type=$1
 name=$2
 version=$MW_VERSION
 
-function fetch_extension {
-  url=$(curl "https://www.mediawiki.org/w/api.php?action=query&list=extdistbranches&format=json&edbexts=$name" | jq -r ".query.extdistbranches.extensions.$name.$version")
-
-  (cd mediawiki/extensions && curl $url | tar xz)
-}
-
-function fetch_skin {
-  url=$(curl "https://www.mediawiki.org/w/api.php?action=query&list=extdistbranches&format=json&edbskins=$name" | jq -r ".query.extdistbranches.skins.$name.$version")
-
-  (cd mediawiki/skins && curl $url | tar xz)
-}
-
-`fetch_$type`
+# extdist only serves supported branches (REL1_41 is gone), so use the GitHub mirrors
+dir=mediawiki/${type}s/$name
+mkdir -p $dir
+curl -fsL "https://github.com/wikimedia/mediawiki-${type}s-$name/archive/refs/heads/$version.tar.gz" \
+  | tar xz -C $dir --strip-components=1

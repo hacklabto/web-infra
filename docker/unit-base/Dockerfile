@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.22
 
 RUN apk add unit-php82 php82-ldap php82-mysqli php82-curl php82-dom php82-exif php82-fileinfo \
     php82-pecl-imagick php82-mbstring php82-zip php82-gd php82-iconv php82-intl \
@@ -7,6 +7,7 @@ RUN apk add unit-php82 php82-ldap php82-mysqli php82-curl php82-dom php82-exif p
 WORKDIR /app
 
 COPY docker-entrypoint.sh .
+COPY 99-hardening.ini /etc/php82/conf.d/
 
 VOLUME [ "/var/lib/unit" ]
 VOLUME [ "/run" ]
