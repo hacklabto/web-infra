@@ -1,6 +1,6 @@
-FROM alpine:latest AS wp2static-builder
+FROM alpine:3.22 AS wp2static-builder
 
-RUN apk add composer php82-simplexml php82-dom php82-tokenizer php82-xml php82-xmlwriter zip git
+RUN apk add composer php83-simplexml php83-dom php83-tokenizer php83-xml php83-xmlwriter zip git
 WORKDIR /build
 COPY wp2static.patch .
 RUN git clone https://github.com/elementor/wp2static
@@ -9,7 +9,7 @@ RUN git apply ../wp2static.patch
 RUN composer install
 RUN composer build wp2static
 
-FROM ghcr.io/hacklabto/unit-base:cda4fb84927d8de52c03c98183bf55718699bf0c
+FROM ghcr.io/hacklabto/unit-base:49dacf65d2802f8c6c4e67e7e75bbcedb618d803
 
 RUN wget -O - https://wordpress.org/wordpress-6.4.3.tar.gz | tar xz
 

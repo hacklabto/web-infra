@@ -10,11 +10,11 @@
 			{
 				"match": {
 					"uri": [
-						"!/tests/qunit/*",
 						"/cache/*",
 						"/includes/*",
 						"/languages/*",
 						"/maintenance/*",
+						"/mw-config/*",
 						"/tests/*",
 						"/vendor/*"
 					]
@@ -31,11 +31,8 @@
 						"/img_auth.php*",
 						"/index.php*",
 						"/load.php*",
-						"/mw-config/*.php",
 						"/opensearch_desc.php*",
-						"/profileinfo.php*",
 						"/rest.php*",
-						"/tests/qunit/*.php",
 						"/thumb.php*",
 						"/thumb_handler.php*"
 					]
@@ -89,6 +86,9 @@
 				"idle_timeout": 30,
 				"max": 50,
 				"spare": 1
+			},
+			"limits": {
+				"requests": 1
 			}
 		}
 	}
