@@ -23,10 +23,10 @@ services:
 
   knowledge:
     image: ghcr.io/hacklabto/mediawiki:${MEDIAWIKI_COMMIT}
-    ports: ["172.17.0.1:18922:8080"]
+    ports: ["172.17.0.1:18922:80"]
     volumes:
-      - "/opt/knowledge/LocalSettings.php:/app/mediawiki/LocalSettings.php"
-      - "/opt/knowledge/images:/app/mediawiki/images"
+      - "/opt/knowledge/LocalSettings.php:/var/www/html/LocalSettings.php:ro"
+      - "/opt/knowledge/images:/var/www/html/images"
     restart: always
 
   anubis-knowledge:
@@ -45,10 +45,10 @@ services:
 
   wiki:
     image: ghcr.io/hacklabto/mediawiki:${MEDIAWIKI_COMMIT}
-    ports: ["[::1]:18881:8080"]
+    ports: ["[::1]:18881:80"]
     volumes:
-      - "/opt/wiki/LocalSettings.php:/app/mediawiki/LocalSettings.php"
-      - "/opt/wiki/images:/app/mediawiki/images"
+      - "/opt/wiki/LocalSettings.php:/var/www/html/LocalSettings.php:ro"
+      - "/opt/wiki/images:/var/www/html/images"
     restart: always
 
   members-platform-web:

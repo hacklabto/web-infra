@@ -1,27 +1,24 @@
-FROM ghcr.io/hacklabto/unit-base:cda4fb84927d8de52c03c98183bf55718699bf0c
+ARG MW_VERSION=1.43
 
-RUN apk add php82-xml php82-ctype php82-session php82-xmlreader imagemagick rsvg-convert
+# official image: apache + mod_php, rebuilt upstream for php security releases
+FROM mediawiki:${MW_VERSION}
 
-# todo: this image is _way_ too big
+ARG MW_VERSION
+ARG DPL3_VERSION=3.6.4
 
-RUN sed -i 's#set -e"#(cd /app/mediawiki && php maintenance/run.php update)\n\n&#' docker-entrypoint.sh
+RUN docker-php-ext-install exif && a2enmod headers
 
-RUN wget -O - https://releases.wikimedia.org/mediawiki/1.41/mediawiki-1.41.0.tar.gz | tar xz && mv mediawiki-1.41.0 mediawiki
+RUN set -eux; \
+    branch="REL$(echo $MW_VERSION | tr . _)"; \
+    fetch() { git clone -q --depth 1 --branch "$2" "$3" "$1" && rm -rf "$1/.git"; }; \
+    fetch skins/Modern $branch https://gerrit.wikimedia.org/r/mediawiki/skins/Modern; \
+    fetch skins/CologneBlue $branch https://gerrit.wikimedia.org/r/mediawiki/skins/CologneBlue; \
+    fetch extensions/MobileFrontend $branch https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontend; \
+    fetch extensions/Auth_remoteuser $branch https://gerrit.wikimedia.org/r/mediawiki/extensions/Auth_remoteuser; \
+    fetch extensions/DynamicPageList3 $DPL3_VERSION https://github.com/Universal-Omega/DynamicPageList4
 
-COPY fetch.sh /tmp
-RUN apk add curl jq
+COPY apache.conf /etc/apache2/conf-enabled/zz-hacklab.conf
+COPY php.ini /usr/local/etc/php/conf.d/zz-hacklab.ini
 
-ENV MW_VERSION REL1_41
-
-RUN /tmp/fetch.sh skin Modern
-RUN /tmp/fetch.sh skin CologneBlue
-RUN /tmp/fetch.sh extension MobileFrontend
-RUN /tmp/fetch.sh extension Auth_remoteuser
-RUN curl -fsL https://github.com/Universal-Omega/DynamicPageList3/archive/REL1_39.tar.gz \
-    | tar xz && mv DynamicPageList3-REL1_39 mediawiki/extensions/DynamicPageList3
-
-COPY config.json /app/config.json
-
-# mount /app/mediawiki/LocalSettings.php:ro
-# mount /app/mediawiki/images/:rw
-
+# mount /var/www/html/LocalSettings.php:ro
+# mount /var/www/html/images/:rw (owned by www-data, uid 33)
