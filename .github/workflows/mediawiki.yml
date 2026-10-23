@@ -1,8 +1,12 @@
 name: Build mediawiki Docker image
 
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
+  workflow_dispatch:
+  # pick up upstream mediawiki/php security rebuilds
+  schedule:
+    - cron: "0 9 * * 1"
 
 jobs:
   deploy:
@@ -22,7 +26,9 @@ jobs:
           context: docker/mediawiki/
           file: docker/mediawiki/Dockerfile
           push: true
+          pull: true
           tags: |
             ghcr.io/hacklabto/mediawiki:${{ github.sha }}
+            ${{ github.ref == 'refs/heads/main' && 'ghcr.io/hacklabto/mediawiki:latest' || '' }}
           cache-from: type=registry,ref=ghcr.io/hacklabto/mediawiki:${{ env.BRANCH_NAME }}
           cache-to: type=inline
